@@ -1,0 +1,24 @@
+<section class="index-free">
+	<div class="free-wrapper">
+		<div class="free-heading">
+			<h1 class="title">限时免费</h1>
+		</div>
+		<div class="free-content">
+			<ul class="content-list" v-if="free">
+				<li class="list-item" v-for="item of free">
+					<a :href="'/book?title='+item.title">
+						<div class="item">
+							<img :src="item.data.cover" :alt="item.data.title" width="86px" height="113">
+							<span class="free-limit" >限免</span>
+						</div>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="free-footer">
+			<p class="footer-content">
+				更多限免内容>>
+			</p>
+		</div>
+	</div>
+</section>

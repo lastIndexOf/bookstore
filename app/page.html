@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,minimal-ui">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="css/reset.css">
+	<style type="text/css">
+		#app-reader {
+			width: 100%;
+			background: #e9dfc7;
+			overflow-x: hidden;
+			font-size: 0;
+			font-family: '微软雅黑'
+		}
+		#app-reader.nights {
+			background-color: rgb(15, 20, 16);
+		}
+		#app-reader .title-wrapper {
+			margin: 0 15px;
+			padding: 15px 0;
+			border-bottom: 1px solid rgba(7, 17, 27, .2);
+		}
+		#app-reader .title-wrapper h1 {
+			font-size: 20px;
+			color: #736357;
+			letter-spacing: 2px;
+		}
+		#app-reader .body-wrapper {
+			min-height: 667px;
+			padding: 15px;
+		}
+		#app-reader .body-wrapper .body {
+			min-height: 100%;
+			font-size: 20px;
+			font-weight: 500;
+			color: #555;
+			line-height: 31px;
+		}
+		/* #app-reader.night .body-wrapper .body {
+			color: rgb(147, 153, 159);
+		} */
+		.btn-wrapper .btn-list {
+			text-align: center;
+			padding: 10px;
+			margin-bottom: 20px;
+			z-index: 9999;
+		}
+		.btn-wrapper .btn-list li {
+			display: inline-block;
+			background-color: rgba(0, 0, 0, .8);
+			color: rgb(147, 153, 159);
+			font-size: 14px;
+		}
+		.btn-wrapper .btn-list li a {
+			padding: 4px 40px;
+		}
+		.btn-wrapper .btn-list li:first-child {
+			border-top-left-radius: 4px;
+			border-bottom-left-radius: 4px;
+			border-right: 1px solid rgba(7, 17, 27, .4);
+		}
+		.btn-wrapper .btn-list li:last-child {
+			margin-right: 0;
+			border-top-right-radius: 4px;
+			border-bottom-right-radius: 4px;
+		}
+		#app-reader .heading {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 50px;
+			z-index: 100;
+			background-color: rgba(0, 0, 0, .9);
+			padding: 14px 0 0 14px;
+			box-sizing: border-box;
+			transition: all .5s ease;
+		}
+		#app-reader .heading .left {
+			display: inline-block;
+		}
+		#app-reader .heading .left .icon {
+			display: inline-block;
+			width: 23px;
+			height: 23px;
+			background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkJGMkEyQkQxMjdBNDExRTU4NjA2QTJDMjFDQ0I0ODhEIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkJGMkEyQkQyMjdBNDExRTU4NjA2QTJDMjFDQ0I0ODhEIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6QkYyQTJCQ0YyN0E0MTFFNTg2MDZBMkMyMUNDQjQ4OEQiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6QkYyQTJCRDAyN0E0MTFFNTg2MDZBMkMyMUNDQjQ4OEQiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4Ia560AAAHWklEQVR42uyd7W9URRTGDwu0lFL6IkiBCpQKBpUKJCIETURFxZL4sdao8YN+0D/IL2pilFD8aCJgQAE1KGhSkCqEl1KUSguU0gIV6ELredJn2unC7V5298596Z7kyb27odw7vzsz98yZmbPTRkZGJESbrVqoekQ1j6rg9zNVJap7qiHVbR4HVb3UVVW36r+wCjDNMUBAWa6qVy1TLcA95Pl/ogCXVOdVnapzqnSSAAJQg2qNaiVrlTEU9KLqCmsTatX1jBon/JtZPM5lTTW1djEfjDH8zWnVMVUHAccSIAq7TrVBVWV9/6/qDGtMl+punteZoapjjV5BoMb6VYdVbdbDiDxA1Ib1qk3sy2ADrBHtrGVBGmrlatb4Sn6HPvKQ6rdCN+9CA3xatcW68R7Vz6oTQTclj67jSdXzfFGZB7lP9WfUAKKJblM9boHbz6Ya6mueING0N1sgz6q+ZRMPHWCjqklVyo7/gOp31bBEy1KqZwkSL6Q7ql2q42EBnEFwa/kZzXSP6oZE2+BnbmXzhh0lyLsuAZar3lI9xk55D990cTI8+Df40rug2kknPXCA1ap3VTXsQ3ayz4uj1aqaWaY+1Veqa0ECnK96j80A/lyr6qbE2+aoWug/ovv5ko59wQGixr3PkUAn4Q1JMqyEEOs5EvqCNdLXm8lvn/eOBW9HguCZ4d8Olm0uy1peKIDT+XRqOPRqdTlYd2hplq2LZW2hp5E3wCaONa8lrNl61cRWlrWOb+m8ADYyIICn83Uur/kY2iDLmmbZG3MFWMXaJ/TzemTqWA/LbFpgVS4At3F4diKGTnIhrI1lLyULz+GYV1QFgYFbHObkZndvuynqjFlB/c+76NqABUJk7X5qIIY2W3i+b4r0e5P1h/t4/opMjHx7AkQwFPG8bg60o2JL2S9d5rHO0XXB4CKZrM8GEB75Jp7/IOHH8owtU/2oep3DSRw/d3RtMDjI800ycU7nPoCIUCAM/4+MBh2jAu8ga6Btmx3ewxm+mWfLePjuPoCI3G7g+S8Rhwf71eF9oBb+xPONYk3F2gAbGNaBF34q4vBQGz5wfD8nyaaKrO4DuMbyf0YiDu8lNitxXAvbMliNAcTreSX/UXsM4J0M6d6Ok9HYAoGU1XzxBYKk/UV4njbAaA1YLbcBmunI00V4vt7IY8wMwHoeO4rwslqHzQwAEXnFQp0hjj6K8Ca3brICs3IANLP16P+Gi/Cy2jBZwRYBYC0/XHJ8I/UxhCcZrBYAYA0/9DqGdyCm8GxWNSmOPsSh+xJ3eCLjk+/VAFhh+ThFeP7sOo8VAFjGD7eK8HybYVUGgCasH+Rc75IEwbNZzQTAUn64E+AFP00QPJtVCQDe44fpAV7wOY/vP44hvAmWsmiWBnidIx7ff6JaFUNuhtVQSibuxQjKPlT9/YDv4cTvjyFEMzuXdlUDMceyOUEQxzwXADT7zCoCvmhngiDO5fFmyvKqqxxcOCkQzeitDwDNSsx5ji6eBIjzbIBm1dUChzcQd4iG1SUANEHUxeJ/ye9UhpiS8Q2NF/FhkM0YbsxCxzcTR4i1ZIXtuYMpqyCwhhBuKG4QG2xmBqCZaVoR0k3FCeJKHs/aAM9xRIIlY5VFiJ5WSUZDZDYG0GyTx6KZxhBvMOoQG8notBkC22/dYzyuk/wTQSQR4jSysVlNAIgJ43562U+E3FT8QHTdX68im36xFiDYALFoxqy52xiBzjobxM8c174XeH5YrNVrmY7zUQYXlobk0jwMRJcPeQV9ZLBpy/SqbUPHeIjnL4fcF2aDeMBh7XuR54ckY6vbg4ZuSA2CKc5FkrEeOGSIKMReGZ3UxtHVCtW1ZDFANpINIGacvuc59kaURwTiedVrMrpKH8cLDq5ZTgZCJmk/AGHt9LSxKr1Jpq41kUGHeKzcnWw/LPKqfCSj2S3WSS775YLbguWq6aLsd8jCMzTjZfB3dvN8q4yv4poKhrKavcJgcC0XgLA/WPMwC9Ucof4w6H6vmWU+SgaSK0DzBLrohWMbfEmC4ZnkE9Usc9adqn4AIqMPtsH3MRLRIg/YtZgAm8my1bGsreIjm5HfED6i1ttldFkXVlm9nbCaWMIymbQn28XnNt9cEu8gJQjiYklJvFNOeIvpLANeIIl3jFUS4ny+nZCgIQmpn64Q3kMtNM01+VgZn5pJPrZborU526+fZycfQ+Kdh15kmm/6u1dlfBf3X6rvJPrp7+bQr33KGvvvFcfp72xDoPFNGU1qGKcEjLjXbyTP9YlBpQDt5uC7IyLwsDEQiTQimQLUttWMXpiZPSxrQwwNkzBhJKHFFCTyHCzhdwN8sAXb0usqDXI/h0TYb3s1YHDYw4bZs2dkfMUZIslIY3BEIp4G2bZSvukyE3F3sQl18vxenteZztGDSZBTlxEQOUwPIZBF9FFIBQ+H3PywQC8LfYsFThPQlEwF79W8zY8RQI9KYX6M4DJrdCJ/jCDbMKpWJv85DFOr0uzLbsjEn8PokRDTU/0vwACwczOmB6btAwAAAABJRU5ErkJggg==);
+			background-repeat: no-repeat;
+			background-size: 23px 23px;
+		}
+		#app-reader .heading .text {
+			display: inline-block;
+			padding-left: 6px;
+			font-size: 14px;
+			font-weight: 200;
+			line-height: 24px;
+			color: #fff;
+			vertical-align: top;
+		}
+		#app-reader .footer {
+			position: fixed;
+			display: flex;
+			display: -webkit-flex;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height: 70px;
+			z-index: 100;
+			background-color: rgba(0, 0, 0, .9);	
+			transition: all .5s ease;
+		}
+		#app-reader .footer .catalog, .night, .font {
+			flex: 1;
+			-webkit-flex: 1;
+			text-align: center;
+		}
+		#app-reader .footer div > i {
+			display: inline-block;
+			width: 18px;
+			height: 13px;
+			background-size: 18px 13px;
+			background-repeat: no-repeat;
+			color: #fff;
+			margin-top: 20px;
+		}
+		#app-reader .footer .selected p {
+			color: #ff7800;
+		}
+		#app-reader .footer div > .icon-night {
+			margin-top: 15px;
+			height: 18px;
+			background-size: 18px 18px;
+		
+		}
+		#app-reader .footer .catalog > .icon-catalog {
+			background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADUAAAAoCAYAAABerrI1AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkNFN0E3M0IwMjc4NDExRTU5RkYxQjg1Rjk2QkEyNzBEIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkNFN0E3M0IxMjc4NDExRTU5RkYxQjg1Rjk2QkEyNzBEIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6N0M1ODVCRkYyNzg0MTFFNTlGRjFCODVGOTZCQTI3MEQiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6N0M1ODVDMDAyNzg0MTFFNTlGRjFCODVGOTZCQTI3MEQiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5uTX6PAAAA0UlEQVR42uyXsQrCMBRFX4p0V39Pv8FJcekHFJe6d+v3NY6CDvUFooQ0AcEllnPhlgz3QU6bBq6ZnvdaRC7qndqoB/VR/ZC5wuxGytLtvXejUJ0uDlGgVZ8Tg6lsaWod1Jh461a9TQyMBX6hWLaSBary5zBWn8kPf8DUr/Rx8hfEPth4kxkIs+tCL4rG/VOLPH5AAQUUUEABBRRQv0O54nf1tcL6dZ3Jh9mpMH/2TkmkJFISKYmURKCAAgoooIACCihKIiWRkkhJpCR+XxJfAgwA/ROhOlYvoWQAAAAASUVORK5CYII=);
+		}
+		#app-reader .footer .font > .icon-font {
+			background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEYAAAAuCAYAAACViW+zAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjBCRTkzQUQ3Mjc4NzExRTU5RkYxQjg1Rjk2QkEyNzBEIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjBCRTkzQUQ4Mjc4NzExRTU5RkYxQjg1Rjk2QkEyNzBEIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6Q0U3QTczQkEyNzg0MTFFNTlGRjFCODVGOTZCQTI3MEQiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MEJFOTNBRDYyNzg3MTFFNTlGRjFCODVGOTZCQTI3MEQiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz6/hjRDAAAFqklEQVR42uRaaWwVVRi9fTbYqoBoEGIVrDsBA6JRAY0VSkQUl7pQI8YQGjTRaNCgBtdoApho3aoRRJaIC25/VBTBCiqCuKX+QDFqFANRsRCtsRWr9XzxNBnu++6bO/fNe9i+k5y0c2fmzrwz3/22mbKuv9pNChgCLgLHgBvABnCr6Qkor1CHy1ISZjVYG9leC55V6sLsB/4ucynj7T1VmEwKU09VRBHUmx6MNIS5JuF4SQhzIniKY5+MjypVYa4OtKb/PfJxvn3B7eABOY4Rp3wo2FZKzndajCiG+68otaWkLaP23rKcQoWRDHekMj5DGZPjTisVYWYqY+vB5/g3qZPuFcIMYFJn4wnrr50EDujtwlwFVlpjreBL/P9lbkdRyfMKBcmn7gRfAbeAO8G/wS7yT3Ab+AHYBF4I7ptmuJbUfzN4vDXeCN4U2X4AvNE65gtwOG80rYc6ndcdFnD+DnAe+ChCdme+wpzJyjmKLgr1VWTsOAph11A14LoURBkKrgBPTWGu98CLIE5rPktJC73NliiG5vxOgUK3WN3GlEQRnAG+Zjo7+oQKMxCsU8YXOI7XnHAd5wnFQeAb4GBl37fgXeDp4CGS09Jiy+hPxMoud0RNSSduDV1Kt4DzrbEfecHdyvHyBKSLN8galxu4L1CYp5lxRyGO9WbwcbDT00/OtYVg2VKFJdWWxGIyjtxliUMUw/HFjhwoJBqOVMoLuca54COeonT7xDmMUHbtV5d0KU0Ej7TG/gEXxpy3kMdFIfPUBghzneLMJUS/HTCXiPOYMl6bVBgtc30T/C7mPNm/KgUnvA94iTX2Cy0lFO87rNJbmCpwiqdz9XXCUzivLyqZK21g4tadSObTU96q5FSHJxFmBj18FD8wOvhgJY/fowviKDhz9XXuBccy4kg/eWkKofo3a/tAX2HkBzQo44sSODs57illvEER3Ac7mdxtTEGY/UNrpXOi5hXzQ3NBE1LmnbyXasSTafHlocJoTvJVFmRJsI3n7a12xCD6tfnM0j8CJ4UWkUeA3yjinQ2+FXBzkxS/JKH8KI/o5oP+4LHgMWA177+a20O8ZymvKDMxa9yViK1Kue0xkwlXyLmy1M/jw6pO08RcFiPp/PeOmiRt5CorcvWEbgePDrzmbpYld7gsxiXMpeALRXSGl4Evei6XpWw0JcEf7CN9Bn4Ivs4H0pVUmDXghCIK0+xxvT70UeMd+yXx+5RhfDOrbXH68u5rV47SwFsYcWBfFrDJVKP0arRmlw2tKyj4GnwYfJY5TtKaSRUm4wihtigi1LspWcc6zme3AnKFbnGs1yo/ai4bV00BogyM8+xRVBi9ab3ApNer7XI0t7Qmezemm+zm9f3gbQmddhQnJBFGKtiDrTFZa8tS9inLlAJQrnux4/gJSu10T573MD6JMFqmuyKH8wrFLkfUc7Ujhlvbn1Cc4DTF6O/GVGFGgOMczaZCQFtO4xQTzzBM21acD+rjcqBMzNNqYQ+kEJB5P/eon6RssD8jGWb0z9t8cBj4oE9aLZDPNaZ5PtU0oTWxtM9LWqxtyZTPD7ievO9abbIb9JHeQUcmKsxUxVxlDS8vsDDLFV/R32R/2LhSOfdJ4/8VhfRdZoEfmz3fomoRbXBUGG0ZPWMK/yVUGxOzuOW0mGm9nYes531eQCvqXl7lrNrr2QuSNmajZYm/gjco1x7RnfkOdZT9o1lbFBqjGWW0pC56X9czw42DtCv7xvig7VyKP5vsL9gfQvY7Syymw2S/4thUJFEM65tNisO1I4+8EZjnkWj2ixFFLHQUH4b0ordY+6+En+knwvzElDoaCmeb4mK2JUQT78vGHPZeWhLOL3M/D55k/ntptyOy724l0WyMFpE1jO3NrEyLDVk6E1lIrvU4fgxFGkv/UsWSQnxHK5dhC/3QGqe/dHy1+a8AAwCKR08FSRIHxQAAAABJRU5ErkJggg==);		
+		}
+		#app-reader .footer .night > .icon-night {
+			background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkU2OUYzRUEwMjc4NzExRTU5RkYxQjg1Rjk2QkEyNzBEIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjhBMzA2RjA2Mjc4QTExRTU5RkYxQjg1Rjk2QkEyNzBEIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6RTY5RjNFOUUyNzg3MTFFNTlGRjFCODVGOTZCQTI3MEQiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6RTY5RjNFOUYyNzg3MTFFNTlGRjFCODVGOTZCQTI3MEQiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4v5YACAAAC/UlEQVR42tSaXYhNURTH97kzRnJ9ZTQzPh7IMEr5yshHEwkRkSeSjweEiMjDePTkhcKLPCApUV54GxTKcDM0JfL9QE0UGdcdEmb7L3edOq5zzz1nn332Pvdfv5e5Z9Zd666711577etIKYUGjQILwRwwDOwDfcKAamP873CwBawDrcABP8ACU87/FWUgIk3gKMjL/7VfwV4sojxcCw6AL9JfD0DGdABhv0KTwAUwO+CZvaBfGFaYAJaDyyAb8Mwt0CksKFPh9W3gWgXnSSeFJTkBZXQrOM3VJUi9oJErUGoysBKcCuE86YYt58sF0MILtiakjTvCojI+i/o876Zh9ThNARysUCr99NpmAN5FTAvxBRgS0QZlK5+GDLQrOC9sOu/NADVm70LU+9RmYJOi8yLigk8sgPUxbEy0HUATH0RUNdV2AG0hd9xyarMdwNyYNhaDOpsBTI5pYwRYYTMAHYtwh80ARmqws1ShBdEWwGAdGyI4HrMYKAegawFSMdhlo5XIK/ZAfvoO5oFukxn4oNHeID5DjzUZwCvNNsn5DjDOVADPErA7BdwF0xP2v4YCyCVknDJwjxe2k8AHT4O0VTSeawD9Mll1glZN48T5IMc+N7p/7JJm1AFWg4ERna4Da8F1j62cdzZKY5RZBtbcEuYzuAlugyfgOSjwyS7LJ8QJYJoojuuX+RycLnqPlPXgLZfBalCB11iveyL7CM6K6tEZURxp/jNWGc2pzFbBp98M3peOVXrA4Sr49I+4zpdmgDSA94UZKXX+ITeNP8sFIDg9XWBoypyni0O6THzqN1bx6iXYCH6nyHnyZXOp8+UCIF0Fe1LiPH1FdoMr/q8G74DbwS9pT/TeO+Nes64JuFpNUl+5fdByT9wMHhl0vhu06L7opobqEPiWoON9oJ0v1bXf1LuMAcdAQbPjJ6g9juqPE+PXKvVcbjeAmQqHFsmb5iVwzu1tVKYSOkpdA1jEU246To4XxZ/gZLlUU5v8CbzhI+x9bqV74r7xHwEGAPDRVwnecW5KAAAAAElFTkSuQmCC);
+		}
+		#app-reader .footer .night > .icon-sun {
+			background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADkAAAA5CAYAAACMGIOFAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkNFN0E3M0I0Mjc4NDExRTU5RkYxQjg1Rjk2QkEyNzBEIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkNFN0E3M0I1Mjc4NDExRTU5RkYxQjg1Rjk2QkEyNzBEIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6Q0U3QTczQjIyNzg0MTFFNTlGRjFCODVGOTZCQTI3MEQiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6Q0U3QTczQjMyNzg0MTFFNTlGRjFCODVGOTZCQTI3MEQiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz6o6V5PAAADu0lEQVR42uyaTUgVURTHm/cigiS1LEitoHoqbgtcZAStngtDoYxa9rFsYYuWfUBhuSjCneiylkH2oavoEZlC4aYsM9toakWLnpsWyfQfOMJrOvdjZs6bedQc+OF7d9499/y9M/fj3HFc110Xo3WAYfp8BozG0agTs8hFsIM+L4H6f1GkvzEnjkYz6/4DS0WmIlORSlsq+bxcKSI3gkHwBlwSGA3PkrjPNE+GnhXAZYprkOLUjOmYQjT0un/aMHAMdcqNQ3GUWq+ujqknt/i+nwZDcc1vih4cojh0cQbqyQaw4P5tSfQo14OezYNGXV0b5zly5Le+mEX2KQTmTHVtl3U58BQ0lpQtgJ2Gei2gE7SDVrANVIMf4Bt4B56Dh+C9wdc80/4RMGteTNr/J/09+lhzW3WBCTeYTVA91WPwKGgPBrldS9kFBkA/qGOuN4FnbjTz6jczvuuoXa/93UHilnxmjoMVV8ZWyJ9IbFICz4FVV9ZWyW9FiDwGfmmCnQIXQBuoBxvobxuVT2nqen57khbpPYNFRYBzoNtiPnXod3MKP0VqJxGRjmaQGQXVAf1VUz3VYOQkIbJLEdADkA3pM0v1OetKQuQ4E8gHUBXxEfDqzzC+x+MW2aL4b+eFRuu8wn9LGH9hN82dTNlrMCa02xgjf347GmdmoJ0puyu8rbrHlB2MU2QrUzYuLLJg2a6VyA7KbLsMi3Tdb9sVuwRJ+2TZrjF+b+4pTd2rkk/1hky4Z+vBapkz7lzW3Ri/ze3KpTqKTNlmYYG1TNlKmJRJpiSDxpkqq/aVKdsrLHIPU/ZFkwFUxu/dYk8M3c3ZNNjnKzsEXgmKPKxo12/G+MOOri+YslPCPXnSst2yTSEjTNkBkBcSmCd/Nu1aDF/hl15cDmdGYO26SXrtGuUs5AZT1kQrn2xIn1la6TQx1/rDT0TR9pMFxUL6fogeraJ6nBWS2k+uZQZUyauPtOO38dNNv1cltZqTzvH0WOZ49oMaqlND321yPCfSbF2ad5UXufaMFiIKLER9BqOK9Ea4m2CZEk61mrOQyYDiJjUpzFpqb5nad8olkjsfvG6RC7oIRsBsSY62SN9H6Lopd3MtyvmorcCM4gD0dkxnk7eiHARHEWg84RWkUXPinZEQeSXsCa8wOYXQqxIi31aAQN3R/rTEAv1lqCNs3taSTqoEmclmqf2FIFlCm3cGvBeBzoOt4I7vraqgJvW+awPF9B0MgJ9RRZYz+5a+75qKTEWmIstuFfm+q7RJve8ayH4LMACaxEJEaXs23AAAAABJRU5ErkJggg==);
+			margin-top: 15px;
+			height: 18px;
+			background-size: 18px 18px;
+		}
+		#app-reader .footer div > p{
+			font-size: 12px;
+			font-weight: 200;
+			color: #fff;
+		}
+		#app-reader .footer #font-change {
+			position: fixed;
+			left: 0;
+			bottom: 70px;
+			width: 100%;
+			background-color: rgba(0, 0, 0, .9);	
+		}
+		#app-reader .footer #font-change .fontSize {
+			padding-left: 20px;
+			text-align: left;
+		}
+		#app-reader .footer #font-change .fontSize .size-select {
+			display: inline-block;
+			padding: 20px 0 0 20px;
+			
+		}
+		#app-reader .footer #font-change .fontSize span{
+			font-size: 14px;
+			color: #fff;
+		}
+		#app-reader .footer #font-change .fontSize .size-select .select-item {
+			display: inline-block;
+			font-size: 14px;
+			color: #fff;
+			padding: 4px 36px;
+			margin-right: 16px;
+			border-radius: 16px;
+			border: 1px solid rgb(147, 153, 159);
+		}
+		#app-reader .footer #font-change .fontSize .size-select .select-item.selected {
+			color: #ff7800;
+			border-color: #ff7800;
+		}
+		#app-reader .footer #font-change .bgcolor {
+			padding-left: 20px;
+			text-align: left;
+			padding: 20px 0;
+		}
+		#app-reader .footer #font-change .bgcolor span {
+			font-size: 14px;
+			color: #fff;
+			line-height: 32px;
+			padding: 0 20px;
+			vertical-align: top;
+		}
+		#app-reader .footer #font-change .container {
+			display: inline-block;
+		}
+		#app-reader .footer #font-change .bgcolor .color-wrapper {
+			display: inline-block;
+			padding: 2px;
+			border-radius: 50%;
+			margin-right: 10px;
+			line-height: 0;
+		}
+		#app-reader .footer #font-change .bgcolor .color-wrapper > .color {
+			display: inline-block;
+			width: 32px;
+			height: 32px;
+			background-color: #f7eee5;
+			border-radius: 50%;
+		}
+		#app-reader .footer #font-change .bgcolor .color-wrapper.light {
+			border: 1px solid #ff7800;
+		}
+		#app-reader .footer #font-change .bgcolor .color-wrapper:nth-child(2) > .color {
+			background-color: #e9dfc7;
+			
+		}
+		#app-reader .footer #font-change .bgcolor .color-wrapper:nth-child(3) > .color {
+			background-color: #a4a4a4;
+			
+		}
+		#app-reader .footer #font-change .bgcolor .color-wrapper:nth-child(4) > .color {
+			background-color: #cdefce;
+			
+		}
+		#app-reader .footer #font-change .bgcolor .color-wrapper:last-child > .color {
+			background-color: #283548;
+		}
+			
+		#app-reader .touchArea {
+			position: fixed;
+			top: 0;
+			width: 100%;
+			height: 66%;
+		}
+		#app-reader .touchArea .touch {
+			width: 100%;
+			height: 50%;
+		/* 	transform: translateY(33%);
+			-webkit-transform: translateY(33%);
+			-moz-transform: translateY(33%);
+			-o-transform: translateY(33%); */
+		}
+	</style>
+	<style>
+		@keyframes animate {
+			from {
+				transform: rotateX(0) rotateY(0);
+				-webkit-transform: rotateX(0) rotateY(0);
+			}
+			50% {
+				transform: rotateX(180deg);
+				-webkit-transform: rotateX(180deg);
+			}
+			to {
+				transform: rotateY(180deg);
+				-webkit-transform: rotateY(180deg);
+			}
+		}
+		@-webkit-keyframes animated {
+			from {
+				transform: rotateX(0) rotateY(0);
+				-webkit-transform: rotateX(0) rotateY(0);
+			}
+			50% {
+				transform: rotateX(180deg);
+				-webkit-transform: rotateX(180deg);
+			}
+			to {
+				transform: rotateX(180deg) rotateY(180deg);
+				-webkit-transform: rotateX(180deg) rotateY(180deg);
+			}
+		}
+		#splider {
+			position: fixed;
+			width: 55px;
+			height: 55px;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			margin: auto;
+			z-index: 9999;
+			transform-origin: center;
+			animation: animated 1.2s ease-in-out infinite;
+			background-color: #67CF22;
+		}
+	</style>
+</head>
+<body>
+<div id="splider">
+</div>
+
+	<div id="app-reader">
+		<header class="heading" style="display: none;"> 
+			<div class="left">
+				<a id="back2cate" style="display: inline-block;" href="javascript:void(0);"><div class="icon"></div></a>
+			</div>
+			<div class="text">返回书架</div>
+		</header>
+		<div class="title-wrapper">
+			<h1 class="title"></h1>
+		</div>
+		<div class="body-wrapper">
+			<div class="body">
+			</div>
+		</div>
+		<div class="btn-wrapper">
+			<ul class="btn-list">
+				<li id="prev"><a style="display: inline-block;color:#fff;">上一章</a></li>
+				<li id="next"><a style="display: inline-block;color:#fff;">下一章</a></li>
+			</ul>
+		</div>
+
+		<footer class="footer" style="display: none;">
+			<div class="catalog">
+				<i class="icon-catalog"></i>
+				<p>目录</p>
+			</div>
+			<div class="font">
+				<i class="icon-font"></i>
+				<p>字体</p>
+			</div>
+			<div class="night">
+				<i class="icon-night"></i>
+				<p>夜间</p>
+			</div>
+			<div id="font-change" style="display: none;">
+				<div class="fontSize">
+					<span>字号</span>
+					<div class="size-select">
+						<div class="select-item" data-size="22">大</div>
+						<div class="select-item" data-size="20">小</div>
+						<!-- selected -->
+					</div>
+				</div>
+				<div class="bgcolor">
+					<span>背景</span>
+					<div class="container">
+						<div class="color-wrapper"><div data-color="f7eee5" class="color"></div></div>
+						<div class="color-wrapper"><div data-color="e9dfc7" class="color"></div></div>
+						<div class="color-wrapper"><div data-color="a4a4a4" class="color"></div></div>
+						<div class="color-wrapper"><div data-color="cdefce" class="color"></div></div>
+						<div class="color-wrapper"><div data-color="283548" class="color"></div></div>
+					</div>
+				</div>
+			</div>
+		</footer>
+		<div class="touchArea">
+			<div class="top-touch touch"></div>
+			<div class="middle-touch touch"></div>
+			<div class="bottom-touch touch" style="display: none"></div>
+		</div>
+	</div>
+</body>
+<script src="lib/zepto.min.js"></script>
+<script src="./js/scripts/touch.js"></script>
+<script>
+	window.jQuery = $;
+</script>
+<script>
+	(function() {	
+		const Util = (function() {
+			const prefix = 'html5Reader' 
+					, storageSet = function(key, val) {
+							return localStorage.setItem(prefix + key, val)
+						}
+					, storageGet = function(key) {
+							return localStorage.getItem(prefix + key)
+						}
+
+			return { storageGet, storageSet }
+
+		})()
+
+		const Dom = {
+					App: $('#app-reader'),
+					touchArea: $('.touchArea'),
+					font: $('.footer .font'),
+					night: $('.footer > .night'),
+					colors: $('.footer .bgcolor .color'),
+					fontSizes: $('#font-change .select-item'),
+					splider: $('#splider')
+				}
+
+		const win = $(window)
+		let key = false
+
+		function readerModel() {
+
+		}
+
+		function readerBaseReander() {
+			const color = Util.storageGet('color')
+					, size = Util.storageGet('size')
+					, _id = location.search.split('id=')[1].split('&')[0]
+
+			let curPage = ''
+				, _title = location.search.split('title=')[1]
+				, page = location.search.split('page=')[1]
+
+			if (_title)
+				_title = _title.split('&')[0]
+
+			if (_id)
+				curPage = Util.storageGet(_id) - 0
+			else
+				curPage = Util.storageGet(_title) - 0
+
+			$('.catalog').tap(() => {
+				if (_id)
+					location.href = '/catalog?id=' + _id + '&page=' + curPage
+				else {
+					const _src = location.search.split('src=')[1].split('&')[0]
+					location.href = '/catalog?title=' + _title + '&page=' + curPage + '&src=' + _src
+				}
+			})
+
+			if (page) {
+				page = page.split('&')[0]
+				if (_id) {
+					$.get('/ajax/page?id=' + _id + '&page=' + page, function(data) {
+						Dom.splider.hide()
+						if (data.ERROR) {
+							$('.body')
+								.html(data.data.content
+									.replace(/\s\s\s/, '&nbsp;&nbsp;&nbsp;')
+									.replace(/\s\s\s/igm, '<br/>&nbsp;&nbsp;&nbsp;')
+									.replace(/style\d\(\);/igm, ''))
+							
+							curPage = page - 0
+							
+							$('.title').text(data.data.title.replace(/全书网/, ''))
+							$('#back2cate').attr('href', '/book?id=' + _id)
+
+							$('#next a').tap(() => {
+								curPage++
+								Util.storageSet(_id, curPage)
+								location.href = `/page.html?id=${ _id }&page=${ curPage }`
+							})
+							$('#prev a').tap(() => {
+								if (!curPage)
+									return
+								curPage--
+								Util.storageSet(_id, curPage)
+								location.href = `/page.html?id=${ _id }&page=${ curPage }`
+							})
+
+							Util.storageSet(_id, curPage)
+						}
+					})
+				} else {
+					const _src = location.search.split('src=')[1].split('&')[0]
+					$.get('/ajax/page?title=' + _title + '&page=' + page + '&src=' + _src, function(data) {
+						Dom.splider.hide()
+						if (data.ERROR) {
+							$('.body')
+								.html(data.data.content
+									.replace(/\s\s\s/, '&nbsp;&nbsp;&nbsp;')
+									.replace(/\s\s\s/igm, '<br/>&nbsp;&nbsp;&nbsp;')
+									.replace(/style\d\(\);/igm, ''))
+							
+							curPage = page - 0
+							
+							$('.title').text(data.data.title.replace(/全书网/, ''))	
+							$('#back2cate').attr('href', '/book?id=' + _id + '&title=' + _title + '&src=' + _src)
+
+							$('#next a').tap(() => {
+								curPage++
+								Util.storageSet(_title, curPage)
+								location.href = `/page.html?id=${ _id }&title=${ _title }&src=${ _src }&page=${ curPage }`
+							})
+							$('#prev a').tap(() => {
+								if (!curPage)
+									return
+								
+								curPage--
+								Util.storageSet(_title, curPage)
+								location.href = `/page.html?id=${ _id }&title=${ _title }&src=${ _src }&page=${ curPage }`
+							})
+
+							Util.storageSet(_title, curPage)
+						}
+					})
+				}
+			} else {
+					if (!curPage) {
+						if (_id) {
+							$.get('/ajax/page?id=' + _id + '&page=0', function(data) {
+								Dom.splider.hide()
+								if (data.ERROR) {
+									$('.body')
+										.html(data.data.content
+											.replace(/\s\s\s/, '&nbsp;&nbsp;&nbsp;')
+											.replace(/\s\s\s/igm, '<br/>&nbsp;&nbsp;&nbsp;')
+											.replace(/style\d\(\);/igm, ''))
+								
+									$('.title').text(data.data.title)
+									$('#back2cate').attr('href', '/book?id=' + _id)
+									curPage = 0
+									$('#next a').tap(() => {
+										curPage++
+										Util.storageSet(_id, curPage)
+										location.href = `/page.html?id=${ _id }&page=${ curPage }`
+									})
+
+									Util.storageSet(_id, curPage)
+								}
+							})	
+						} else {
+							const _src = location.search.split('src=')[1].split('&')[0]
+							$.get('/ajax/page?title=' + _title + '&page=0' + '&src=' + _src, function(data) {
+								Dom.splider.hide()
+								if (data.ERROR) {
+									$('.body')
+										.html(data.data.content
+											.replace(/\s\s\s/, '&nbsp;&nbsp;&nbsp;')
+											.replace(/\s\s\s/igm, '<br/>&nbsp;&nbsp;&nbsp;')
+											.replace(/style\d\(\);/igm, ''))
+								
+									$('.title').text(data.data.title)
+									$('#back2cate').attr('href', '/book?title=' + _title)
+									curPage = 0
+									$('#next a').tap(() => {
+										curPage++
+										Util.storageSet(_title, curPage)
+										location.href = `/page.html?id=${ _id }&title=${ _title }&src=${ _src }&page=${ curPage }`
+									})
+
+									Util.storageSet(_title, curPage)
+								}
+							})
+						
+						}
+					} else {
+						if (_id) {
+							$.get('/ajax/page?id=' + _id + '&page=' + curPage, function(data) {
+									Dom.splider.hide()
+									if (data.ERROR) {
+										$('.body')
+											.html(data.data.content
+												.replace(/\s\s\s/, '&nbsp;&nbsp;&nbsp;')
+												.replace(/\s\s\s/igm, '<br/>&nbsp;&nbsp;&nbsp;')
+												.replace(/style\d\(\);/igm, ''))
+									
+										$('.title').text(data.data.title.replace(/全书网/, ''))
+										$('#back2cate').attr('href', '/book?id=' + _id)
+										$('#next a').tap(() => {
+											curPage++
+											if (_id)
+												Util.storageSet(_id, curPage)
+											else
+												Util.storageSet(_title, curPage)
+
+											location.href = `/page.html?id=${ _id }&page=${ curPage }`
+										})
+										$('#prev a').tap(() => {
+											if (curPage === 0)
+												return
+
+											curPage--
+											if (_id)
+												Util.storageSet(_id, curPage)
+											else
+												Util.storageSet(_title, curPage)
+
+											location.href = `/page.html?id=${ _id }&page=${ curPage }`
+										})
+									}
+								})	
+						} else {
+							const _src = location.search.split('src=')[1].split('&')[0]
+							$.get('/ajax/page?title=' + _title + '&page=' + curPage + '&src=' + _src, function(data) {
+									Dom.splider.hide()
+									if (data.ERROR) {
+										$('.body')
+											.html(data.data.content
+												.replace(/\s\s\s/, '&nbsp;&nbsp;&nbsp;')
+												.replace(/\s\s\s/igm, '<br/>&nbsp;&nbsp;&nbsp;')
+												.replace(/style\d\(\);/igm, ''))
+									
+										$('.title').text(data.data.title.replace(/全书网/, ''))
+										$('#back2cate').attr('href', '/book?title=' + _title)
+										$('#next a').tap(() => {
+											curPage++
+											if (_id)
+												Util.storageSet(_id, curPage)
+											else
+												Util.storageSet(_title, curPage)
+
+											location.href = `/page.html?id=${ _id }&src=${ _src }&page=${ curPage }&title=${ _title }`
+										})
+										$('#prev a').tap(() => {
+											if (curPage === 0)
+												return
+
+											curPage--
+											if (_id)
+												Util.storageSet(_id, curPage)
+											else
+												Util.storageSet(_title, curPage)
+
+											location.href = `/page.html?id=${ _id }&src=${ _src }&page=${ curPage }&title=${ _title }`
+										})
+									}
+								})
+						}
+					}
+			}
+
+			if (size)
+				Dom.App
+					.find('.body-wrapper .body')
+					.css('fontSize', size + 'px')			
+
+			if (color)
+				Dom.App
+					.css('backgroundColor', '#' + color)
+		}
+
+		function EventHanlder() {
+			Dom.touchArea
+				.find('.middle-touch')
+				.on('tap', function() {
+					Dom.App
+						.find('header')
+						.toggle()
+					Dom.App
+						.find('footer')
+						.toggle()
+						.find('.font')
+						.removeClass('selected')
+					Dom.App
+						.find('.footer #font-change')
+						.hide()
+				})
+
+			Dom.font
+				.on('tap', function(e) {
+					$(this)
+						.toggleClass('selected')
+
+					$('#app-reader .footer #font-change')
+						.toggle()
+				})
+			
+			Dom.fontSizes
+				.on('tap', function() {
+					const self = $(this)
+							, size = self.data('size')
+
+					key = true
+
+					Dom.App
+						.find('.body-wrapper .body')
+						.css('fontSize', size)
+
+					Dom.fontSizes
+						.forEach(item => $(item).removeClass('selected'))
+					self
+						.addClass('selected')
+
+					Util.storageSet('size', size)
+
+					key = false
+				})
+
+			Dom.night
+				.on('tap', function() {
+					const self = $(this)
+							, p = self.find('p')
+					
+					Dom.colors
+						.parent()
+						.removeClass('light')
+
+					Dom.App
+						.css('background-color', '')
+
+					Dom.App
+						.toggleClass('nights')
+
+					self
+						.toggleClass('selected')
+						.find('i')
+						.toggleClass('icon-night')
+						.toggleClass('icon-sun')
+				
+					if (p.text() === '夜间')
+						p.text('白天')
+					else
+						p.text('夜间')
+				})
+
+			Dom.colors
+				.on('tap', function() {
+					const self = $(this)
+							, color = self.data('color')
+
+					Dom.App
+						.css('backgroundColor', '#' + color)
+
+					Dom.colors
+						.forEach(color => $(color).parent().removeClass('light'))
+					
+					self
+						.parent()
+						.addClass('light')
+
+					Util.storageSet('color', color)
+				})
+
+			win.on('scroll', function() {
+				if (!key) {
+					Dom.App
+						.find('header')
+						.hide()
+					Dom.App
+						.find('footer')
+						.hide()
+				}
+			})
+
+		}
+
+		function main() {
+			readerBaseReander()
+			EventHanlder()
+		}
+
+
+		main()
+
+	})()
+</script>
+</html>

@@ -1,0 +1,24 @@
+var appData = require('../data.json')
+  , seller = appData.seller
+  , goods = appData.goods
+  , ratings = appData.ratings
+  , apiRoutes = express.Router()
+
+apiRoutes.get('/seller', (req, res) => {
+  res.json({
+    errno: 0,
+    data: seller
+  })
+})
+apiRoutes.get('/goods', (req, res) => {
+  res.json({
+    errno: 0,
+    data: goods
+  })
+})
+apiRoutes.get('/ratings', (req, res) => {
+  res.json({
+    errno: 0,
+    data: ratings
+  })
+})

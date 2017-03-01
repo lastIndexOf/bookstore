@@ -1,0 +1,36 @@
+<section class="index-recommend">
+	<div class="recommend-wrapper">
+		<div class="recommend-heading">
+			<span class="title">重磅推荐</span>
+			<i class="icon">推</i>
+			<div class="info-right">
+				<span class="male select">男</span>
+				<span class="female">女</span>
+			</div>
+		</div>
+		<ul class="recommend-content">
+			<li class="content-detail" v-for="(item, index) of recommend" v-if="index === 0">
+			<a :href="'/book?id=' + item._id + '&title=' + item.title">
+				<div class="avatar">
+					<img :src="item.cover" :alt="item.title" width="85" height="113">
+					<span class="isover" v-if="item.finish">完结</span>
+				</div>
+				<div class="details">
+					<h1 class="name">{{ item.title }}</h1>
+					<p class="autor">{{ item.authors }}</p>
+					<p class="introduce">{{ item.summary }}</p>
+					<div class="modules" v-if="item.tags">
+						<span class="module" v-for="tag of item.tags">{{ tag }}</span>
+					</div>
+				</div>
+			</a>
+			</li>
+			<li class="content-simple" v-for="(item, index) of hot" v-if="index > 0 && index <= 9">
+				<a :href="'/book?id=' + item._id + '&title=' + item.title">
+				<span class="simple-index">0{{ index }}</span>
+				<span class="simple-name">{{ item.title }}</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+</section>

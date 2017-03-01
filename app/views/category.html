@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title><%= title %></title>
+	<link rel="stylesheet" href="../css/all.css">
+	<link rel="stylesheet" href="../css/reset.css">
+	<style>
+		#category {
+			height: 100%;
+		}
+		.scroll {
+			height: 100%;
+			overflow: auto;
+			padding-bottom: 46px;
+		}
+	</style>
+</head>
+<body>
+	<div id="category">
+		<% include include/book-header.html %>
+		<div class="scroll">
+			<div class="free-wrapper">
+				<div class="free-heading">
+					<h1 class="title">快来看小说</h1>
+				</div>
+			</div>
+			<% include include/index-male.html %>
+		</div>
+	</div>
+</body>
+<script src="../js/scripts/vue.js"></script>
+<script src="../js/scripts/zepto.js"></script>
+<script src="../js/scripts/touch.js"></script>
+<script src="../js/category.js"></script>
+</html>

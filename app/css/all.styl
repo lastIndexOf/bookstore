@@ -1,0 +1,496 @@
+#index
+	.header
+		position relative
+		.header-tab
+			display flex
+			flex-flow row
+			padding 0 90px
+			background-color #efeff0
+			border-bottom 1px solid #ddd
+			text-align center
+			.tab-wrapper
+				flex 1
+				display inline-block
+				position relative
+				.header-swiper
+					display inline-block
+					position absolute
+					bottom 1px
+					right 0
+					transition all .3s ease-out
+					-webkit-transition all .3s ease-out
+					-moz-transition all .3s ease-out
+					-o-transition all .3s ease-out
+					&::after
+						content ''
+						display block
+						width 34px
+						height 2px
+						background-color #777 
+				.tab-swiper
+					display inline-block
+					width 100%
+					line-height 44px
+					-webkit-tap-highlight-color rgba(0, 0, 0, 0)
+					&.highlight
+						color #ff6600
+		.header-user
+			display inline-block
+			position absolute
+			left 12px
+			top 12px
+			width 20px
+			height 20px
+			background-size 20px 20px
+			background-image url(http://image.read.duokan.com/mfsv2/download/s010/p01O5K5DzsAZ/2ZODzjwkRQh7l3.png)
+			background-repeat no-repeat
+		.header-checkin
+			display inline-block
+			position absolute
+			right 12px
+			top 12px
+			width 20px
+			height 20px
+			background-size 20px 20px
+			background-image url(http://image.read.duokan.com/mfsv2/download/fdsc3/p01j041d5DOT/boUg2EJlVetOMC.png)
+			background-repeat no-repeat
+	.index-top
+		background-color #fff
+		font-size 12px
+		border-bottom 10px solid #f5f5f5
+		.top-search
+			display block
+			margin 10px 13px
+			padding 8px 0 8px 30px
+			color rgba(0, 0, 0, .4)
+			background url(http://image.read.duokan.com/mfsv2/download/fdsc3/p01dSYLeWtSR/tY73MgTfVw7UAS.png) no-repeat 8px center
+			background-size 12px 12px
+			border 1px solid #f5f5f5
+		  border-radius 2px
+		.top-slider
+			width 100%
+		.top-footer
+			display flex
+			flex-flow row nowrap
+			.footer-item
+				flex 1
+				padding-top 6px
+				text-align center
+				a
+					display inline-block
+					width 100%
+					height 100%
+					i
+						display inline-block
+						width 22px
+						height 22px
+						background-size 22px 22px
+						background-repeat no-repeat					
+				&:first-child
+					i
+						background-image url('../img/male.png')
+				&:nth-child(2)
+					i
+						background-image url('../img/female.png')
+				&:nth-child(3)
+					i
+						background-image url('../img/category.png')
+				&:last-child
+					i
+						background-image url('../img/rank.png')
+						
+	.index-recommend
+		border-bottom 10px solid #f0f0f0
+		.recommend-wrapper
+			.recommend-heading
+				font-size 0
+				line-height 0
+				padding 15px 13px 14px 13px
+				border 1px solid #f0f0f0
+				.title
+					font-size 12px
+					font-weight bold
+					line-height 18px
+					padding-right 2px
+				.icon
+					display inline-block
+					padding 3px 5px 0px 5px
+					font-size 10px
+					color #fff
+					line-height 10px
+					vertical-align top
+					background-color #53ac7d
+					font-style normal
+				.info-right
+					float right
+					.male
+						font-size 10px
+						line-height 16px
+						padding 2px 8px 2px 0
+						border-right 1px solid rgba(147, 153, 159, .7)
+						&.select
+							color #528ae8
+					.female
+						font-size 10px
+						line-height 16px
+						padding 2px 0 2px 8px
+						&.select
+							color #528ae8
+			.recommend-content
+				padding 0 13px
+				font-size 0
+				.content-detail
+					padding 17px 0
+					border-bottom 1px solid #f0f0f0
+					a
+						display flex
+						flex-flow row nowrap
+						.avatar
+							position relative
+							padding-right 12px
+						.isover
+							position absolute
+							bottom 12px
+							left 8px
+							color #fff
+							font-size 12px
+							line-height 20px
+						.details
+							flex 1
+							position relative
+							.name
+								font-size 14px
+								font-weight 600
+								padding-bottom 4px
+							.autor
+								font-size 12px	
+								padding-bottom 4px
+							.introduce
+								font-size 12px
+							.modules
+								margin-top 10px
+								.module
+									display inline-block
+									font-size 10px
+									line-height 10px
+									color #53ac7d
+									padding 2px 4px
+									border 1px solid #53ac7d
+									border-radius 4px
+									margin-right 4px
+									&:last-child
+										margin-right 0
+					
+				.content-simple
+					padding 17px 0
+					border-bottom 1px solid #f0f0f0
+					a
+						display block
+						.simple-index
+							font-size 14px
+							color rgba(237, 83, 15, .9)
+							margin-right 10px
+						.simple-name
+							font-size 14px
+							font-weight 500
+							
+			.recommend-btn
+				display flex
+				flex-flow row nowrap
+				.btn
+					display inline-block
+					flex 1
+					padding 10px
+					font-size 12px
+					text-align center
+	.index-free
+		border-bottom 10px solid #f0f0f0
+		.free-wrapper
+			.free-heading
+				padding 10px 14px
+				border-left 6px solid #ffab18
+				border-bottom 1px solid #f0f0f0
+			.free-content
+				.content-list
+					font-size 0
+					padding 12px 0
+					border-bottom 1px solid #f0f0f0
+					.list-item
+						box-sizing border-box
+						display inline-block
+						width 33%
+						text-align center
+						a
+							display inline-block
+					.item
+						position relative
+						display inline-block
+						overflow hidden
+						// visibility hidden
+						.free-limit
+							display inline-block
+							position absolute
+							top 0
+							right 0
+							font-size 12px
+							line-height 12px
+							padding 2px 20px
+							color #fff
+							background-color #49ab3f
+							transform-origin top center
+							transform translate(30%, 70%) rotate(45deg)
+							-webkit-transform-origin top center
+							-webkit-transform translate(30%, 70%) rotate(45deg)
+							box-shadow 0 0 1px #f0f0f0
+			.free-footer
+				font-size 0
+				border-bottom 1px solid #f0f0f0
+				.footer-content
+					padding 6px 0
+					font-size 13px
+					text-align center
+	.index-self
+		.self-header
+			display flex
+			flex-flow row nowrap
+			padding 12px 16px
+			.header-search
+				flex 1
+				// display block
+				padding 6px 0 6px 30px
+				margin-right 6px
+				background-image url(http://image.read.duokan.com/mfsv2/download/fdsc3/p01dSYLeWtSR/tY73MgTfVw7UAS.png)
+				background-size 12px 12px
+				background-repeat no-repeat
+				background-position 12px center
+				border 1px solid #f0f0f0
+				.search-content
+					font-size 12px
+					color rgba(0, 0, 0, .4)
+					padding-right 12px
+			.header-change
+				flex 0 0 36px
+				width 36px
+				text-align center
+				border 1px solid #f0f0f0
+				.icon
+					margin-top 8px
+					display inline-block
+					width 18px
+					height 18px
+					vertical-align middle		
+					background-image url(http://image.read.duokan.com/mfsv2/download/fdsc3/p01yLF3fEj8l/b7UfAdlfufQKML.png)
+					background-size 18px
+					background-repeat no-repeat
+			
+		.self-books
+			.book-list
+				padding 4px 20px
+				.book-item
+					margin-bottom 12px
+					&:last-child
+						margin-bottom 0
+					a
+						display flex
+						flex-flow row nowrap
+						.avaitar
+							flex 0 0 86px
+							width 86px
+							img
+								box-shadow 0 4px 2px #ddd
+						.summary
+							flex 1	
+							padding-left 12px
+							.title
+								font-size 12px
+								font-weight 200
+								padding-top 16px
+								color rgba(7, 17 ,27, .7)
+
+.book-header
+	.header-top
+		background-color #efeff0
+		padding 12px
+		a
+			-webkit-tap-highlight-color rgba(0, 0, 0, 0)
+			.top-back
+				display inline-block
+				margin 2px 0 0 2px
+				width 10px
+				height 16px
+				background-image url(../../img/back.png)
+				background-repeat no-repeat
+				background-size 10px 16px
+		.title
+			padding-left 6px
+			vertical-align top
+#book
+	.header-detail
+		padding 24px 24px 0 24px
+		border-bottom 10px solid #f0f0f0
+		.detail-base
+			font-size 0
+			width 100%
+			.avaitar
+				display inline-block
+				width 100px
+				img
+					box-shadow 0 4px 2px #ddd
+			.summary
+				display inline-block
+				padding-left 15%
+				vertical-align top
+				.title
+					font-size 14px
+					font-weight 600
+					color #000
+					padding-top 12px
+					padding-bottom 18px
+				.author
+					font-size 12px
+					color #4b99a7
+					padding-bottom 8px
+				.comment
+					font-size 12px
+					line-height 18px
+					padding-bottom 8px
+				.words
+					font-size 12px
+					line-height 18px
+					.finish
+						margin-left 6px
+						padding 2px 4px
+						color #63bd6e
+						border 1px solid #63bd6e
+						border-radius 2px
+		.book-reader
+			display block
+			padding 6px
+			text-align center
+			background-color #f35d02
+			color #fff
+			border-radius 4px
+			margin-top 16px
+			margin-bottom 6px
+			&:hover
+				background-color rgba(243, 93, 2, 2)
+			&:active
+				background-color rgba(243, 93, 2, 2)
+		.book-summary
+			margin-top 12px
+			padding 6px
+			border-bottom 1px solid #f0f0f0
+		.new
+			text-align center
+			padding 6px
+			
+#category
+	.free-wrapper
+		.free-heading
+			padding 10px 14px
+			border-left 6px solid #ffab18
+			border-bottom 1px solid #f0f0f0
+	.index-recommend
+		border-bottom 10px solid #f0f0f0
+		.recommend-wrapper
+			.recommend-heading
+				font-size 0
+				line-height 0
+				padding 15px 13px 14px 13px
+				border 1px solid #f0f0f0
+				.title
+					font-size 12px
+					font-weight bold
+					line-height 18px
+					padding-right 2px
+				.icon
+					display inline-block
+					padding 3px 5px 0px 5px
+					font-size 10px
+					color #fff
+					line-height 10px
+					vertical-align top
+					background-color #53ac7d
+					font-style normal
+				.info-right
+					float right
+					.male
+						font-size 10px
+						line-height 16px
+						padding 2px 8px 2px 0
+						border-right 1px solid rgba(147, 153, 159, .7)
+						&.select
+							color #528ae8
+					.female
+						font-size 10px
+						line-height 16px
+						padding 2px 0 2px 8px
+						&.select
+							color #528ae8
+			.recommend-content
+				padding 0 13px
+				font-size 0
+				.content-detail
+					padding 17px 0
+					border-bottom 1px solid #f0f0f0
+					a
+						display flex
+						flex-flow row nowrap
+						.avatar
+							position relative
+							padding-right 12px
+						.isover
+							position absolute
+							bottom 12px
+							left 8px
+							color #fff
+							font-size 12px
+							line-height 20px
+						.details
+							flex 1
+							position relative
+							.name
+								font-size 14px
+								font-weight 600
+								padding-bottom 4px
+							.autor
+								font-size 12px	
+								padding-bottom 4px
+							.introduce
+								font-size 12px
+							.modules
+								margin-top 10px
+								.module
+									display inline-block
+									font-size 10px
+									line-height 10px
+									color #53ac7d
+									padding 2px 4px
+									border 1px solid #53ac7d
+									border-radius 4px
+									margin-right 4px
+									&:last-child
+										margin-right 0
+					
+				.content-simple
+					padding 17px 0
+					border-bottom 1px solid #f0f0f0
+					a
+						display block
+						.simple-index
+							font-size 14px
+							color rgba(237, 83, 15, .9)
+							margin-right 10px
+						.simple-name
+							font-size 14px
+							font-weight 500
+							
+			.recommend-btn
+				display flex
+				flex-flow row nowrap
+				.btn
+					display inline-block
+					flex 1
+					padding 10px
+					font-size 12px
+					text-align center

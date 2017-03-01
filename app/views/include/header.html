@@ -1,0 +1,11 @@
+<div class="header" id="app-header">
+	<div class="header-tab">
+		<div class="tab-wrapper">
+			<a href="javascript:void(0)" class="tab-swiper" :class="{ highlight: highlight === 1}" @tap="highlight = 1" ref="tabA">书城</a>
+			<i class="header-swiper" :style="{'transform': tabSwipe}"></i>
+		</div>
+		<div class="tab-wrapper"><a href="javascript:void(0)" class="tab-swiper"  :class="{ highlight: highlight === 2}" @tap="highlight = 2">书架</a></div>
+	</div>
+	<span class="header-user"></span>
+	<span class="header-checkin"></span>
+</div>

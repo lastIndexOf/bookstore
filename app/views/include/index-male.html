@@ -1,0 +1,26 @@
+<section class="index-recommend">
+	<div class="recommend-wrapper">
+		<div class="recommend-heading" v-show="male[0].finish !== undefined">
+			<span class="title">男生频道</span>
+		</div>
+		<ul class="recommend-content" v-if="male">
+			<li class="content-detail" v-for="item of male">
+			<a :href="'/book?id=' + item._id + '&title=' + item.title">
+				<div class="avatar">
+					<img :src="item.cover" :alt="item.title" width="85" height="113">
+					<span class="isover" v-show="item.finish">完结</span>
+				</div>
+				<div class="details">
+					<h1 class="name">{{ item.title }}</h1>
+					<p class="autor">{{ item.authors }}</p>
+					<p class="introduce">{{ item.summary}}</p>
+				</div>
+			</a>
+			</li>
+		</ul>
+		<div class="recommend-btn" v-show="isMale">
+			<a class="btn btn-change">换一换</a>
+			<a href="/male" class="btn btn-female">男生频道>></a>
+		</div>
+	</div>
+</section>

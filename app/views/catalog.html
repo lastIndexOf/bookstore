@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<title><%= title %></title>
+	<link rel="stylesheet" href="../css/reset.css">
+	<link rel="stylesheet" href="../css/all.css">
+	<style>
+		#catalog {
+			height: 100%;
+			overflow: hidden;
+		}
+		#catalog .container {
+			height: 100%;
+			overflow: auto;
+			padding-bottom: 46px;
+		}
+		.container .chapter-list .chapter {
+			padding: 10px;
+			border-bottom: 1px solid #f0f0f0;
+		}
+		.container .chapter-list .chapter a {
+			display: block
+		}
+		.title.light {
+			color: #f35d02;
+		}
+	</style>
+</head>
+<body>
+	<div id="catalog">
+		<div class="book-header">
+			<div class="header-top">
+				<a href="javascript:history.go(-1);">
+					<i class="top-back"></i>
+				</a>
+				<span class="title"><%= data.title %></span>
+			</div>
+		</div>
+		<div class="container">
+			<ul class="chapter-list">
+			<% for (let i = 0; i < data.arcs.length; i++) { %>
+				<li class="chapter">
+					<a href="../page.html?id=<%= data._id %>&page=<%= i %>&title=<%= data.title %>&src=<%= data.src %>">
+						<% if (page === i) { %>
+						<span class="title light"><%= data.arcs[i].title.replace(/全书网/, '') %></span>
+						<% } else { %>
+						<span class="title"><%= data.arcs[i].title.replace(/全书网/, '') %></span>
+						<% } %>
+					</a>
+				</li>
+			<% } %>	
+			</ul>
+		</div>
+	</div>	
+</body>
+<script src="../js/scripts/zepto.js"></script>
+<script src="../js/scripts/touch.js"></script>
+<script src="../js/scripts/vue.js"></script>
+<script>
+	(function() {
+		document.body.querySelector('.container').scrollTop = $('.title.light').closest('li').offset().top - 45
+
+	})()
+</script>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title><%= title %></title>
+	<link rel="stylesheet" href="../css/all.css">
+	<link rel="stylesheet" href="../css/reset.css">
+	<style>
+		.index-outer {
+			height: 100%;
+			position: relative;
+			overflow: hidden;
+		}
+		.index-infos {
+			display: inline-block;
+			width: 50%;
+			height: 100%;
+			overflow: auto;
+			white-space: normal;
+		}
+		.container-wrapper {
+			box-sizing: border-box;
+			width: 200%;
+			height: 100%;
+			white-space: nowrap;
+			transition: transform .3s;
+		}
+		.container-wrapper.changed {
+			transform: translateX(-50%);
+			-webkit-transform: translateX(-50%);
+		}
+		.index-selfs {
+			display: inline-block;
+			vertical-align: top;
+			width: 50%;
+			box-sizing: border-box;
+		}
+	</style>
+</head>
+<body>
+	<div id="index" class="index-outer">
+		<% include include/header.html %>
+		<div class="container-wrapper" :class="{'changed':highlight===2}">
+			<div class="index-infos">
+				<% include include/index-top.html %>
+				<% include include/index-hot.html %>
+				<% include include/index-recommend.html %>
+				<% include include/index-male.html %>
+				<% include include/index-female.html %>
+				<% include include/index-free.html %>
+				<% include include/index-bottom.html %>
+				<br>		
+				<br>		
+			</div><div class="index-selfs">
+				<% include include/index-self.html %>
+				<br>		
+				<br>		
+			</div>
+		</div>
+	</div>
+</body>
+<script src="../js/scripts/vue.js"></script>
+<script src="../js/scripts/zepto.js"></script>
+<script src="../js/scripts/touch.js"></script>
+<script src="../js/index.js"></script>
+</html>

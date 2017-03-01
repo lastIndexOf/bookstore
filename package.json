@@ -1,0 +1,35 @@
+{
+  "name": "bookstore",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "zfk",
+  "license": "ISC",
+  "dependencies": {
+    "auto-reload": "0.0.2",
+    "cheerio": "^0.22.0",
+    "co-views": "^2.1.0",
+    "ejs": "^2.5.5",
+    "iconv-lite": "^0.4.15",
+    "koa": "^1.2.4",
+    "koa-bodyparser": "^2.3.0",
+    "koa-route": "^2.4.2",
+    "koa-static": "^2.1.0",
+    "koa-static-server": "^1.0.0",
+    "koa-views": "^5.2.0",
+    "mongoose": "^4.8.2",
+    "superagent": "^3.4.4",
+    "superagent-charset": "^1.1.1",
+    "vue": "^2.1.10",
+    "vue-router": "^2.2.1"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.18.7",
+    "gulp": "^3.9.1",
+    "gulp-nodemon": "^2.2.1",
+    "webpack": "^2.2.1"
+  }
+}

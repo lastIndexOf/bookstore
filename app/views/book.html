@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title><%= book.title %></title>
+	<link rel="stylesheet" href="../css/all.css">
+	<link rel="stylesheet" href="../css/reset.css">
+	<style>
+	</style>
+</head>
+<body>
+	<div id="book" class="index-outer">
+		<% include include/book-header.html %>
+		<div class="header-detail">
+		<div class="detail-base">
+			<div class="avaitar">
+				<img src="<%= book.cover %>" width="100" height="134">
+			</div>
+			<div class="summary">
+				<h1 class="title"><%= book.title %></h1>
+				<p class="author"><%= book.authors %></p>
+				<p class="comment">113个评价</p>
+				<p class="words">字数: xxxx字 <span class="finish">连载中</span></p>
+			</div>
+		</div>
+		<a href="../page.html?id=<%= book._id %>&title=<%= book.title %>&src=<%= book.src %>" class="book-reader">开始阅读</a>
+		<div class="book-summary">
+			<%- book.summary %>
+		</div>
+		<div class="new">最新:</div>
+	</div>
+</body>
+<script src="../js/scripts/vue.js"></script>
+<script src="../js/scripts/zepto.js"></script>
+<script src="../js/scripts/touch.js"></script>
+<script src="../js/book.js"></script>
+</html>

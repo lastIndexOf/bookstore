@@ -1,0 +1,26 @@
+<section class="index-recommend">
+	<div class="recommend-wrapper">
+		<div class="recommend-heading">
+			<span class="title">本周最火</span>
+		</div>
+		<ul class="recommend-content" v-if="hot">
+			<li class="content-detail" v-for="item of hot">
+			<a :href="'/book?id=' + item._id + '&title=' + item.title">
+				<div class="avatar">
+					<img :src="item.cover" :alt="item.title" width="85" height="113">
+					<span class="isover" v-if="item.finish">完结</span>
+				</div>
+				<div class="details">
+					<h1 class="name">{{ item.title }}</h1>
+					<p class="autor">{{ item.authors }}</p>
+					<p class="introduce">{{ item.summary }}</p>
+					<div class="modules" v-if="item.tags">
+						<span class="module" v-for="tag of item.tags">{{ tag }}</span>
+					</div>
+				</div>
+			</a>
+			</li>
+			
+		</ul>
+	</div>
+</section>

@@ -1,0 +1,26 @@
+<section class="index-recommend">
+	<div class="recommend-wrapper">
+		<div class="recommend-heading">
+			<span class="title">女生最爱</span>
+		</div>
+		<ul class="recommend-content" v-if="female">
+			<li class="content-detail" v-for="item of female">
+			<a :href="'/book?id=' + item._id + '&title=' + item.title"> 
+				<div class="avatar">
+					<img :src="item.cover" :alt="item.title" width="85" height="113">
+					<span class="isover" v-show="item.finish">完结</span>
+				</div>
+				<div class="details">
+					<h1 class="name">{{ item.title }}</h1>
+					<p class="autor">{{ item.authors }}</p>
+					<p class="introduce">{{ item.summary }}</p>
+				</div>
+			</a>
+			</li>
+		</ul>
+		<div class="recommend-btn">
+			<a class="btn btn-change">换一换</a>
+			<a href="/female" class="btn btn-female">女生频道>></a>
+		</div>
+	</div>
+</section>
