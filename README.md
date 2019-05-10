@@ -1,4 +1,6 @@
-#bookstore
+# 简单商城
+
+- [这是另外的一个线上书城](http://www.ibiquwu.com)
 
 利用vue+nodejs+koa+mongodb搭建的简易移动书城
 
